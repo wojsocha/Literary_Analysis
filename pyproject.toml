@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Literature_Analysis"
+version = "1"
+authors = "Wojciech Socha"
+description = "Projekt zaliczeniowy - Narzędzia programistyczne w Pythonie wspierające analizę danych"
+
+dependencies = [
+
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
