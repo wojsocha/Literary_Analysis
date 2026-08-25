@@ -8,9 +8,10 @@ def simple_check(path_slownik):
 
         for line in dictio:
             if line.strip(): #assuming line isn't empty
-                unique_words.update(extract_words(line))
+                words = extract_words(line)
                 lines_count += 1
-                words_count += len(extract_words(line))
+                words_count += len(words)
+                unique_words.update(words)
 
         unique_words_count = len(unique_words)
 
