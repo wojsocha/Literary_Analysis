@@ -1,5 +1,5 @@
 import pytest
-from literary_analysis.read_work import read_works
+from literary_analysis.read_works import read_works
 
 @pytest.fixture
 def simple_work():

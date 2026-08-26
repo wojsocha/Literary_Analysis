@@ -9,7 +9,7 @@ def read_works(*paths, special_signs=[]):
         with open(path, encoding="utf-8") as file:
 
             for line in file:
-                words.extend(extract_words(line), special_signs)
+                words.extend(extract_words(line, special_signs))
 
         works.append(words)
 
