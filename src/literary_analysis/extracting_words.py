@@ -1,4 +1,4 @@
-def extract_words(text, special_signs=[]):
+def extract_words(text, special_signs=()):
     words = []
     word = ""
 
