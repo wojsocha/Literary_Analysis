@@ -1,24 +1,4 @@
 from literary_analysis.extracting_words import extract_words
-
-# def read_works(*paths, special_signs=()):
-#     works = []
-#     len_of_works = []
-#
-#     for path in paths:
-#         words = []
-#         line_count = 0
-#
-#         with open(path, encoding="utf-8") as file:
-#
-#             for line in file:
-#                 line_count += 1
-#                 words.extend(extract_words(line, special_signs))
-#
-#         works.append(words)
-#         len_of_works.append(line_count)
-#
-#     return works, len_of_works
-
 from collections import Counter
 
 def file_counter(filename, special_signs=()):
@@ -32,3 +12,16 @@ def file_counter(filename, special_signs=()):
             counter.update(words)
 
     return counter, n_of_lines
+
+def works_counter(*paths, special_signs=()):
+    all_works = []
+    total_counter = Counter()
+    total_lines = 0
+
+    for path in paths:
+        counter, lines_count = file_counter(path, special_signs=special_signs)
+        all_works.append((path, counter, lines_count))
+        total_counter.update(counter)
+        total_lines += lines_count
+
+    return all_works, total_counter, total_lines

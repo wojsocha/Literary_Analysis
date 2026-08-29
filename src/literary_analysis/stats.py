@@ -1,18 +1,5 @@
 from literary_analysis.extracting_words import extract_words
 from collections import Counter
-#from literary_analysis.read_works import file_counter
-
-# def file_counter(filename, special_signs=()):
-#     with open(filename, encoding="utf-8") as f:
-#         counter = Counter()
-#         n_of_lines = 0
-#
-#         for line in f:
-#             n_of_lines += 1
-#             words = extract_words(line, special_signs=special_signs)
-#             counter.update(words)
-#
-#     return counter, n_of_lines
 
 def count_words(counter):
     return sum(counter.values())
@@ -34,7 +21,6 @@ def top_n_sorter(counter, top_n):
 
     while i < len(counter) and sorted_counter[i][1] == nth_value:
         i += 1
-
     return sorted_counter[:i]
 
 def letter_counter(word_counter):   #including other characters found, they are part of words in word_counter
