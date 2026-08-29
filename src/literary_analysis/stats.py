@@ -1,4 +1,3 @@
-from literary_analysis.extracting_words import extract_words
 from collections import Counter
 
 def count_words(counter):
