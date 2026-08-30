@@ -6,21 +6,25 @@ def count_words(counter):
 def count_unique_words(counter):
     return len(counter)
 
-def alphabetical_sorter(counter):   #an attempt to do it alphabetically
+def alphabetical_sorter(counter):
     return sorted(counter.items(), key=lambda x: (-x[1], x[0]))
 
-def top_n_sorter(counter, top_n):
+def top_n_sorter(counter, top_n, with_ties=True):
     sorted_counter = alphabetical_sorter(counter)
 
     if len(sorted_counter) <= top_n:
         return sorted_counter
 
-    nth_value = sorted_counter[top_n - 1][1]
-    i = top_n - 1
+    if with_ties == False:
+        return sorted_counter[:top_n]
 
-    while i < len(counter) and sorted_counter[i][1] == nth_value:
-        i += 1
-    return sorted_counter[:i]
+    else:
+        nth_value = sorted_counter[top_n - 1][1]
+        i = top_n - 1
+
+        while i < len(counter) and sorted_counter[i][1] == nth_value:
+            i += 1
+        return sorted_counter[:i]
 
 def letter_counter(word_counter):   #including other characters found, they are part of words in word_counter
     letters_counter = Counter()

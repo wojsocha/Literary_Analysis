@@ -4,15 +4,29 @@ import literary_analysis.analyse as analyse
 
 @pytest.fixture
 def simple_counter():
-    return Counter({
-    "kot": 3,
-    "pies": 5,
-    "ala": 3,
-    "dom": 5,
-    "halo": 3,
-    "auto": 2
-    })
+    return Counter({"kot": 3, "pies": 5, "ala": 3, "dom": 5, "halo": 3, "auto": 2})
 
 def test_distribution(simple_counter):
-    assert analyse.distribution(simple_counter, 6) == Counter({"pies": 5/21, "kot": 3/21, "ala": 3/21, "dom": 5/21, "halo": 3/21, "auto": 2/21})
-    assert analyse.distribution(simple_counter, 4) == Counter({"pies": 5 / 21, "kot": 3/21, "ala": 3/21, "dom": 5 / 21, "halo": 3/21})
+    assert analyse.distribution(simple_counter, 6, with_ties = True) == Counter({"pies": 5/21, "kot": 3/21, "ala": 3/21, "dom": 5/21, "halo": 3/21, "auto": 2/21})
+    assert analyse.distribution(simple_counter, 4, with_ties = True) == Counter({"pies": 5 / 21, "kot": 3/21, "ala": 3/21, "dom": 5 / 21, "halo": 3/21})
+    assert analyse.distribution(simple_counter, 4, with_ties = False) == Counter({"pies": 5 / 21, "ala": 3 / 21, "dom": 5 / 21, "halo": 3 / 21})
+
+@pytest.fixture
+def simple_distribution1():
+    return Counter({"kot": 0.3, "pies": 0.2})
+
+@pytest.fixture
+def simple_distribution2():
+    return Counter({"kot": 0.25, "auto": 0.1})
+
+from math import isclose
+
+def test_L1(simple_distribution1, simple_distribution2):
+    assert isclose(analyse.L1_distance(simple_distribution1, simple_distribution1), 0)
+    assert isclose(analyse.L1_distance(simple_distribution1, simple_distribution2) , 0.35) #0.3 - 0.25 + 0.2 + 0.1
+    assert isclose(analyse.L1_distance(simple_distribution2, simple_distribution1), 0.35)
+
+def test_weighted_Jaccard(simple_distribution1, simple_distribution2):
+    assert isclose(analyse.weighted_Jaccard(simple_distribution1, simple_distribution1), 1)
+    assert isclose(analyse.weighted_Jaccard(simple_distribution1, simple_distribution2) , 0.25/0.6) #(0.25 + 0 + 0) / (0.3 + 0.2 + 0.1)
+    assert isclose(analyse.weighted_Jaccard(simple_distribution2, simple_distribution1) , 0.25/0.6)
