@@ -20,14 +20,7 @@ def test_counters(testable_counter):
 
 @pytest.fixture
 def simple_counter():
-    return Counter({
-    "kot": 3,
-    "pies": 5,
-    "ala": 3,
-    "dom": 5,
-    "halo": 3,
-    "auto": 2
-    })
+    return Counter({ "kot": 3, "pies": 5, "ala": 3, "dom": 5, "halo": 3, "auto": 2})
 
 def test_sorters(simple_counter):
     assert stats.alphabetical_sorter(simple_counter) == [("dom", 5), ("pies", 5), ("ala", 3), ("halo", 3), ("kot", 3), ("auto", 2)]
