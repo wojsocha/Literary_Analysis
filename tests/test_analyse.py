@@ -30,3 +30,8 @@ def test_weighted_Jaccard(simple_distribution1, simple_distribution2):
     assert isclose(analyse.weighted_Jaccard(simple_distribution1, simple_distribution1), 1)
     assert isclose(analyse.weighted_Jaccard(simple_distribution1, simple_distribution2) , 0.25/0.6) #(0.25 + 0 + 0) / (0.3 + 0.2 + 0.1)
     assert isclose(analyse.weighted_Jaccard(simple_distribution2, simple_distribution1) , 0.25/0.6)
+
+@pytest.mark.parametrize("alpha", [alpha/50 for alpha in range(50)])
+def test_similarity_range(simple_distribution1, simple_distribution2, alpha):
+    assert 0 <= analyse.similarity(simple_distribution1, simple_distribution2, alpha) <= 100
+    assert 0 <= analyse.similarity(simple_distribution2, simple_distribution1, alpha) <= 100

@@ -14,3 +14,6 @@ def extract_words(text, special_signs=()):
         words.append(word)
 
     return words
+
+def extract_dictionary_words(text, special_signs=()):   #We know that dictionary will have a specific form
+    return text.strip().split(", ")

@@ -23,4 +23,4 @@ def weighted_Jaccard(distr1, distr2):
     return numerator / denominator
 
 def similarity(distr1, distr2, alpha):
-    return 100 * (alpha * (1 - weighted_Jaccard(distr1, distr2)) + (1 - alpha) * L1_distance(distr1, distr2))
+    return 100 * (alpha * (1 - weighted_Jaccard(distr1, distr2)) + (1 - alpha) * 0.5 * L1_distance(distr1, distr2))
