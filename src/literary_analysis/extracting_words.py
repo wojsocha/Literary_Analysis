@@ -16,4 +16,5 @@ def extract_words(text, special_signs=()):
     return words
 
 def extract_dictionary_words(text, special_signs=()):   #We know that dictionary will have a specific form
-    return text.strip().split(", ")
+    in_lower_caps = [word.lower() for word in text.strip().split(", ")]
+    return in_lower_caps

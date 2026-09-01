@@ -34,4 +34,6 @@ def letter_counter(word_counter):   #including other characters found, they are 
         for letter in word:
             letters_counter[letter] += count
 
-    return letters_counter
+    alphabetically = sorted(letters_counter.items(), key=lambda x: (not x[0].isalpha(), x[0]))
+
+    return alphabetically

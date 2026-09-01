@@ -7,3 +7,4 @@ def test_extract_words():
 
 def test_extract_dictionary_words():
     assert extract_dictionary_words("słowo, słowa, słowami") == ["słowo", "słowa", "słowami"]
+    assert extract_dictionary_words("Słowo, słoWa, słowaMi") == ["słowo", "słowa", "słowami"]
