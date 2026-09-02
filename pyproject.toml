@@ -11,7 +11,8 @@ authors = [
 description = "Projekt zaliczeniowy - Narzędzia programistyczne w Pythonie wspierające analizę danych"
 
 dependencies = [
-
+    "numpy",
+    "matplotlib",
 ]
 
 [project.optional-dependencies]

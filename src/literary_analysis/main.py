@@ -2,49 +2,23 @@ from literary_analysis.extracting_words import extract_dictionary_words
 from literary_analysis.read_works import file_counter, works_counter
 import literary_analysis.stats as stats
 from literary_analysis.find_differences import words_not_in_dictionary
-from literary_analysis.save_results import save_results
+from literary_analysis.save_results import save_results, save_statistics
 import argparse
 
-def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output = "output.txt"):
+def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="output.txt"):
     if dictionary_stats:
         d_counter, d_n_of_lines = file_counter(dictionary, word_extractor=extract_dictionary_words)
-        save_results(output, "Dictionary statistics:")
-        save_results(output, f"Number of lines in dictionary: {d_n_of_lines}.")
-        save_results(output, f"Number of words in dictionary: {stats.count_words(d_counter)}.")
-        save_results(output, f"Number of unique words in dictionary: {stats.count_unique_words(d_counter)}.")
-        save_results(output, f"Top 10 most frequent words in dictionary:")
-        save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(d_counter, 10)))
-        save_results(output, f"How many times each letter appears in dictionary:")
-        ranking_of_letters = stats.alphabetical_sorter(stats.letter_counter(d_counter))
-        save_results(output, ", ".join(f"{word} {count}" for word, count in ranking_of_letters))
 
+        save_statistics(output, "dictionary", d_n_of_lines, d_counter)
         all_works, total_counter, total_lines_count = works_counter(works)
 
-        save_results(output, "\nMaster's works statistics:")
-        save_results(output, f"Number of all files: {len(all_works)}.")
-        save_results(output, f"Number of all lines in all works: {total_lines_count}.")
-        save_results(output, f"Number of words in all works: {stats.count_words(total_counter)}.")
-        save_results(output, f"Number of unique words in all works: {stats.count_unique_words(total_counter)}.")
-        save_results(output, f"Top 10 most frequent words in all works:")
-        save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(total_counter, 10)))
-        save_results(output, f"How many times each letter appears in all works:")
-        ranking_of_letters2 = stats.alphabetical_sorter(stats.letter_counter(total_counter))
-        save_results(output, ", ".join(f"{word} {count}" for word, count in ranking_of_letters2))
-        #save_results(output, ", ".join(f"{word} {count}" for word, count in stats.letter_counter(total_counter).items()))
+        save_results(output, "")  # \n
+        save_statistics(output, "all works", total_lines_count, total_counter, n_of_files=len(all_works))
 
         if len(all_works) != 1: #We don't to repeat our computations.
             for work, counter, lines_count in all_works:
                 save_results(output, "")    #\n
-                save_results(output, work)
-                save_results(output, f"Number of lines: {lines_count}.")
-                save_results(output, f"Number of words: {stats.count_words(counter)}.")
-                save_results(output, f"Number of unique words: {stats.count_unique_words(counter)}.")
-                save_results(output, f"Top 10 most frequent words:")
-                save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(counter, 10)))
-                save_results(output, f"How many times each letter appears:")
-                ranking_of_letters3 = stats.alphabetical_sorter(stats.letter_counter(total_counter))
-                save_results(output, ", ".join(f"{word} {count}" for word, count in ranking_of_letters3))
-                #save_results(output, ", ".join(f"{word} {count}" for word, count in stats.letter_counter(counter).items()))
+                save_statistics(output, work, lines_count, counter)
 
     if no_words:
         save_results(output, f"\nWords from Master's works that didn't appeared in dictionary:")
