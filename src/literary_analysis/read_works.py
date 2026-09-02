@@ -13,7 +13,7 @@ def file_counter(filename, word_extractor=extract_words, special_signs=()):
 
     return counter, n_of_lines
 
-def works_counter(*paths, special_signs=()):
+def works_counter(paths, special_signs=()):
     all_works = []
     total_counter = Counter()
     total_lines = 0

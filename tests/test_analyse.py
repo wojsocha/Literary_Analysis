@@ -35,3 +35,4 @@ def test_weighted_Jaccard(simple_distribution1, simple_distribution2):
 def test_similarity_range(simple_distribution1, simple_distribution2, alpha):
     assert 0 <= analyse.similarity(simple_distribution1, simple_distribution2, alpha) <= 100
     assert 0 <= analyse.similarity(simple_distribution2, simple_distribution1, alpha) <= 100
+    assert 0 == analyse.similarity(simple_distribution1, simple_distribution1, alpha)

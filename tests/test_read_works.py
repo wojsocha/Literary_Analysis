@@ -41,7 +41,7 @@ def test_read_multiple_files(tmp_path):
     file2 = tmp_path / "dzielo2.txt"
     file1.write_text("Ala ma kota.", encoding="utf-8")
     file2.write_text("Kot ma Alę.", encoding="utf-8")
-    assert works_counter(file1, file2) == ([
+    assert works_counter([file1, file2]) == ([
         (tmp_path / "dzielo1.txt", Counter({"ala":1, "ma":1, "kota":1}), 1),
         (tmp_path / "dzielo2.txt", Counter({"kot":1, "ma":1, "alę":1}), 1)
         ], Counter({"ala":1, "ma":2, "kota":1, "kot":1, "alę":1}), 2)
