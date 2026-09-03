@@ -16,8 +16,3 @@ def save_statistics(output, type_of_text, n_of_lines, counter, n_of_files=None):
     save_results(output, f"How many times each letter appears:")
     ranking_of_letters = stats.alphabetical_sorter(stats.letter_counter(counter))
     save_results(output, ", ".join(f"{letter} {count}" for letter, count in ranking_of_letters))
-
-def save_top_words(output, all_works, frequencies):
-    for work, counter, lines_count in all_works:
-        save_results(output, f"\nTop {frequencies} most frequent words in {work}:")
-        save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(counter, frequencies)))

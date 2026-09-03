@@ -1,6 +1,7 @@
 import pytest
 from collections import Counter
 import literary_analysis.analyse as analyse
+from math import isclose
 
 @pytest.fixture
 def simple_counter():
@@ -39,13 +40,14 @@ def test_weighted_Jaccard(simple_distribution1, simple_distribution2):
 def test_similarity_range(simple_distribution1, simple_distribution2, alpha):
     assert 0 <= analyse.similarity(simple_distribution1, simple_distribution2, alpha) <= 100
     assert 0 <= analyse.similarity(simple_distribution2, simple_distribution1, alpha) <= 100
-    assert (analyse.similarity(simple_distribution1, simple_distribution2, alpha) ==
+    assert isclose( analyse.similarity(simple_distribution1, simple_distribution2, alpha),
             analyse.similarity(simple_distribution2, simple_distribution1, alpha))
     assert 100 == analyse.similarity(simple_distribution1, simple_distribution1, alpha)
 
 def test_alpha_values(simple_distribution1, simple_distribution2):
     with pytest.raises(ValueError):
         analyse.similarity(simple_distribution2, simple_distribution1, 2)
+    with pytest.raises(ValueError):
         analyse.similarity(simple_distribution2, simple_distribution1, -2)
 
 def test_empty_distribution(empty_distribution):

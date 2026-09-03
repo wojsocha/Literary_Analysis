@@ -2,7 +2,7 @@ from literary_analysis.extracting_words import extract_dictionary_words
 from literary_analysis.read_works import file_counter, works_counter
 import literary_analysis.stats as stats
 from literary_analysis.find_differences import words_not_in_dictionary
-from literary_analysis.save_results import save_results, save_statistics, save_top_words
+from literary_analysis.save_results import save_results, save_statistics
 import argparse
 
 def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="output.txt"):
@@ -31,16 +31,12 @@ def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="o
             save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
 
     if frequencies !=0:
-        if dictionary_stats:
-            save_top_words(output, all_works, frequencies)
-        else:
-            if no_words:
-                save_top_words(output, all_works, frequencies)
-            else:
-                save_top_words(output, all_works, frequencies)
+        for work, counter, lines_count in all_works:
+            save_results(output, f"\nTop {frequencies} most frequent words in {work}:")
+            save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(counter, frequencies)))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="A program to write literary analysis based on dictionary.")
+    parser = argparse.ArgumentParser(description="A program to write literary analysis based on dictionary and Master's works.")
 
     parser.add_argument("--dictionary", required=True)
     parser.add_argument("--dictionary-stats", action="store_true")
