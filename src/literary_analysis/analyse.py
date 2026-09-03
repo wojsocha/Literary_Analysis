@@ -20,11 +20,35 @@ def weighted_Jaccard(distr1, distr2):
     q = np.array([distr2[word] for word in words])
     numerator = np.minimum(p, q).sum()
     denominator = np.maximum(p, q).sum()
+
     if denominator == 0:    #Both p and q are arrays of zeros, that shouldn't happen
         raise ValueError("Both distributions are empty")
+
     return numerator / denominator
 
 def similarity(distr1, distr2, alpha):
     if not 0 <= alpha <= 1:
         raise ValueError("alpha must be a number between 0 and 1")
+
     return 100 * (alpha * weighted_Jaccard(distr1, distr2) + (1 - alpha) * (1 - 0.5 * L1_distance(distr1, distr2)))
+
+def all_distributions(all_works, top_n):
+    all_distr = []
+
+    for path, counter, lines_count in all_works:
+        all_distr.append(distribution(counter, top_n))
+
+    return all_distr
+
+def similarity_matrix(all_distr, alpha): #lower-triangular matrix
+    matrix = np.zeros((len(all_distr), len(all_distr)))
+    i = 0
+    j = 0
+    while i < len(all_distr):
+        while j <= i:
+            matrix[i, j] = similarity(all_distr[i], all_distr[j], alpha)
+            j += 1
+        j = 0
+        i += 1
+
+    return matrix

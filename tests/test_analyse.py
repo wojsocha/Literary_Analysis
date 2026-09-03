@@ -2,6 +2,7 @@ import pytest
 from collections import Counter
 import literary_analysis.analyse as analyse
 from math import isclose
+import numpy as np
 
 @pytest.fixture
 def simple_counter():
@@ -23,8 +24,6 @@ def simple_distribution2():
 @pytest.fixture
 def empty_distribution():
     return Counter()
-
-from math import isclose
 
 def test_L1(simple_distribution1, simple_distribution2):
     assert isclose(analyse.L1_distance(simple_distribution1, simple_distribution1), 0)
@@ -53,3 +52,15 @@ def test_alpha_values(simple_distribution1, simple_distribution2):
 def test_empty_distribution(empty_distribution):
     with pytest.raises(ValueError):
         analyse.similarity(empty_distribution, empty_distribution, 1)
+
+@pytest.fixture
+def simple_distribution3():
+    return Counter({"tekst": 0.45, "mapa": 0.2})
+
+def test_matrix(simple_distribution1, simple_distribution2, simple_distribution3):
+    value_1_2 = analyse.similarity(simple_distribution1, simple_distribution2, 0.5)
+    value_1_3 = analyse.similarity(simple_distribution1, simple_distribution3, 0.5)
+    value_3_2 = analyse.similarity(simple_distribution2, simple_distribution3, 0.5)
+    result =  analyse.similarity_matrix([simple_distribution1, simple_distribution2, simple_distribution3], 0.5)
+    expected = np.array([[100, 0, 0], [value_1_2, 100, 0], [value_1_3, value_3_2, 100]])
+    assert np.allclose(result, expected)

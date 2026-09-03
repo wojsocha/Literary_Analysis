@@ -16,12 +16,14 @@ def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="o
         save_statistics(output, "all works", total_lines_count, total_counter, n_of_files=len(all_works))
 
         if len(all_works) != 1: #We don't to repeat our computations.
+
             for work, counter, lines_count in all_works:
                 save_results(output, "")    #\n
                 save_statistics(output, work, lines_count, counter)
 
     if no_words:
         save_results(output, f"\nWords from Master's works that didn't appeared in dictionary:")
+
         if dictionary_stats: #Did we previously analyse the dictionary?
             difference = words_not_in_dictionary(total_counter, d_counter)
             save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
@@ -31,6 +33,7 @@ def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="o
             save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
 
     if frequencies !=0:
+
         for work, counter, lines_count in all_works:
             save_results(output, f"\nTop {frequencies} most frequent words in {work}:")
             save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(counter, frequencies)))

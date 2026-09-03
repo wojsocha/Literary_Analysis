@@ -20,10 +20,11 @@ def test_main_dictionary_stats(simple_dictionary, simple_work, tmp_path):
     result = output.read_text(encoding="utf-8")
 
     assert "dictionary statistics:" in result
-    assert "Number of lines: 2." in result
+    assert "Number of lines: 3." in result
     assert "Number of unique words: 8." in result
     assert "all works statistics:" in result
     assert "Number of all files: 1." in result
+    assert "Number of lines: 2." in result
     assert "Number of words: 6." in result
     with pytest.raises(AssertionError):
         assert "Words from Master's works that didn't appeared in dictionary:" in result
