@@ -19,6 +19,10 @@ def simple_distribution1():
 def simple_distribution2():
     return Counter({"kot": 0.25, "auto": 0.1})
 
+@pytest.fixture
+def empty_distribution():
+    return Counter()
+
 from math import isclose
 
 def test_L1(simple_distribution1, simple_distribution2):
@@ -35,4 +39,15 @@ def test_weighted_Jaccard(simple_distribution1, simple_distribution2):
 def test_similarity_range(simple_distribution1, simple_distribution2, alpha):
     assert 0 <= analyse.similarity(simple_distribution1, simple_distribution2, alpha) <= 100
     assert 0 <= analyse.similarity(simple_distribution2, simple_distribution1, alpha) <= 100
-    assert 0 == analyse.similarity(simple_distribution1, simple_distribution1, alpha)
+    assert (analyse.similarity(simple_distribution1, simple_distribution2, alpha) ==
+            analyse.similarity(simple_distribution2, simple_distribution1, alpha))
+    assert 100 == analyse.similarity(simple_distribution1, simple_distribution1, alpha)
+
+def test_alpha_values(simple_distribution1, simple_distribution2):
+    with pytest.raises(ValueError):
+        analyse.similarity(simple_distribution2, simple_distribution1, 2)
+        analyse.similarity(simple_distribution2, simple_distribution1, -2)
+
+def test_empty_distribution(empty_distribution):
+    with pytest.raises(ValueError):
+        analyse.similarity(empty_distribution, empty_distribution, 1)

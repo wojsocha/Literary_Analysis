@@ -2,16 +2,16 @@ from literary_analysis.extracting_words import extract_dictionary_words
 from literary_analysis.read_works import file_counter, works_counter
 import literary_analysis.stats as stats
 from literary_analysis.find_differences import words_not_in_dictionary
-from literary_analysis.save_results import save_results, save_statistics
+from literary_analysis.save_results import save_results, save_statistics, save_top_words
 import argparse
 
 def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="output.txt"):
-    if dictionary_stats:
-        d_counter, d_n_of_lines = file_counter(dictionary, word_extractor=extract_dictionary_words)
-
-        save_statistics(output, "dictionary", d_n_of_lines, d_counter)
+    if dictionary_stats or no_words or frequencies != 0:
         all_works, total_counter, total_lines_count = works_counter(works)
 
+    if dictionary_stats:
+        d_counter, d_n_of_lines = file_counter(dictionary, word_extractor=extract_dictionary_words)
+        save_statistics(output, "dictionary", d_n_of_lines, d_counter)
         save_results(output, "")  # \n
         save_statistics(output, "all works", total_lines_count, total_counter, n_of_files=len(all_works))
 
@@ -22,7 +22,7 @@ def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="o
 
     if no_words:
         save_results(output, f"\nWords from Master's works that didn't appeared in dictionary:")
-        if dictionary_stats: #Did we previously analysed dictionary?
+        if dictionary_stats: #Did we previously analyse the dictionary?
             difference = words_not_in_dictionary(total_counter, d_counter)
             save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
         else:
@@ -31,9 +31,13 @@ def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="o
             save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
 
     if frequencies !=0:
-        for work, counter, lines_count in all_works:
-            save_results(output, f"\nTop {frequencies} most frequent words in {work}:")
-            save_results(output, ", ".join(f"{word}: {count}" for word, count in stats.top_n_sorter(counter, frequencies)))
+        if dictionary_stats:
+            save_top_words(output, all_works, frequencies)
+        else:
+            if no_words:
+                save_top_words(output, all_works, frequencies)
+            else:
+                save_top_words(output, all_works, frequencies)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A program to write literary analysis based on dictionary.")
