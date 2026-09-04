@@ -62,5 +62,5 @@ def test_matrix(simple_distribution1, simple_distribution2, simple_distribution3
     value_1_3 = analyse.similarity(simple_distribution1, simple_distribution3, 0.5)
     value_3_2 = analyse.similarity(simple_distribution2, simple_distribution3, 0.5)
     result =  analyse.similarity_matrix([simple_distribution1, simple_distribution2, simple_distribution3], 0.5)
-    expected = np.array([[100, 0, 0], [value_1_2, 100, 0], [value_1_3, value_3_2, 100]])
+    expected = np.array([[100, value_1_2, value_1_3], [value_1_2, 100, value_3_2], [value_1_3, value_3_2, 100]])
     assert np.allclose(result, expected)

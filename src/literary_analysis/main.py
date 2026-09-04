@@ -2,7 +2,7 @@ from literary_analysis.extracting_words import extract_dictionary_words
 from literary_analysis.read_works import file_counter, works_counter
 import literary_analysis.stats as stats
 from literary_analysis.find_differences import words_not_in_dictionary
-from literary_analysis.save_results import save_results, save_statistics
+from literary_analysis.save_results import save_results, calculate_statistics
 import argparse
 
 def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="output.txt"):
@@ -11,26 +11,24 @@ def main(dictionary, dictionary_stats, works, no_words, frequencies=0, output="o
 
     if dictionary_stats:
         d_counter, d_n_of_lines = file_counter(dictionary, word_extractor=extract_dictionary_words)
-        save_statistics(output, "dictionary", d_n_of_lines, d_counter)
+        save_results(output, calculate_statistics("dictionary", d_n_of_lines, d_counter))
         save_results(output, "")  # \n
-        save_statistics(output, "all works", total_lines_count, total_counter, n_of_files=len(all_works))
+        save_results(output, calculate_statistics("all works", total_lines_count, total_counter, n_of_files=len(all_works)))
 
         if len(all_works) != 1: #We don't to repeat our computations.
 
             for work, counter, lines_count in all_works:
                 save_results(output, "")    #\n
-                save_statistics(output, work, lines_count, counter)
+                save_results(output, calculate_statistics(work, lines_count, counter))
 
     if no_words:
         save_results(output, f"\nWords from Master's works that didn't appeared in dictionary:")
 
-        if dictionary_stats: #Did we previously analyse the dictionary?
-            difference = words_not_in_dictionary(total_counter, d_counter)
-            save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
-        else:
+        if not dictionary_stats: #Did we previously analyse the dictionary?
             d_counter, d_n_of_lines = file_counter(dictionary, word_extractor=extract_dictionary_words)
-            difference = words_not_in_dictionary(total_counter, d_counter)
-            save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
+
+        difference = words_not_in_dictionary(total_counter, d_counter)
+        save_results(output, ", ".join(f"{word}: {count}" for word, count in difference))
 
     if frequencies !=0:
 

@@ -1,5 +1,5 @@
 import pytest
-from literary_analysis.save_results import save_results, save_statistics
+from literary_analysis.save_results import save_results, calculate_statistics
 from collections import Counter
 
 def test_save_results(tmp_path):
@@ -7,9 +7,10 @@ def test_save_results(tmp_path):
     save_results(file, "text")
     assert file.read_text(encoding="utf-8") == "text\n"
 
-def test_save_statistics(tmp_path):
+def test_calculate_statistics(tmp_path):
     file = tmp_path / "output.txt"
-    save_statistics(file, "dictionary", 14, Counter({"alo": 1, "b": 2, "c": 3}))
+    computations = calculate_statistics("dictionary", 14, Counter({"alo": 1, "b": 2, "c": 3}))
+    file.write_text(computations, encoding="utf-8")
     result = file.read_text(encoding="utf-8")
 
     assert "dictionary statistics:" in result

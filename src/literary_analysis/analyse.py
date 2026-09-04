@@ -40,7 +40,7 @@ def all_distributions(all_works, top_n):
 
     return all_distr
 
-def similarity_matrix(all_distr, alpha): #lower-triangular matrix
+def similarity_matrix(all_distr, alpha):
     matrix = np.zeros((len(all_distr), len(all_distr)))
     i = 0
     j = 0
@@ -51,4 +51,5 @@ def similarity_matrix(all_distr, alpha): #lower-triangular matrix
         j = 0
         i += 1
 
-    return matrix
+    symmetrical =  matrix + matrix.T - np.diag(np.diag(matrix)) # matrix is lower-triangular
+    return symmetrical
